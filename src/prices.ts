@@ -45,15 +45,20 @@ export function findPrice(
  * The timeseries endpoint always returns metals in USD.
  * Convert to the target currency using that day's exchange rate.
  */
-export function convertFromUsd(usdPrice: number, date: string, rates: Record<string, TimeseriesDay>, currency: string): number {
+export function convertFromUsd(
+  usdPrice: number,
+  date: string,
+  rates: Record<string, TimeseriesDay>,
+  currency: string,
+): number {
   const day = rates[date];
   const rate = day?.currencies?.[currency];
   if (!rate) return usdPrice;
   return usdPrice / rate;
 }
 
-export async function getPriceReports(assetFilter?: string, currency = 'USD'): Promise<PriceReport[]> {
-  const [latest, rates] = await Promise.all([fetchLatest(currency), fetchAllTimeseries(currency)]);
+export async function getPriceReports(assetFilter?: string, currency = 'USD', refresh = false): Promise<PriceReport[]> {
+  const [latest, rates] = await Promise.all([fetchLatest(currency, refresh), fetchAllTimeseries(currency, refresh)]);
 
   const assets = resolveAssets(assetFilter);
   const today = new Date();
