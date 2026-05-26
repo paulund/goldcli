@@ -1,0 +1,24 @@
+{
+  "name": "goldcli",
+  "version": "1.0.0",
+  "description": "CLI tool to track precious metal spot prices with historical comparisons",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "gold": "tsx src/index.ts --asset gold",
+    "silver": "tsx src/index.ts --asset silver",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+
+    "@types/node": "^22.14.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
