@@ -6,11 +6,18 @@ set -euo pipefail
 
 REPO="${1:-paulund/goldcli}"
 
-gh api "repos/$REPO/branches/main/protection" \
-  --method PUT \
-  --field required_status_checks="{\"checks\":[{\"context\":\"quality-gate\"}],\"strict\":true}" \
-  --field enforce_admins=true \
-  --field required_pull_request_reviews="{\"required_approving_review_count\":1}" \
-  --field required_linear_history=true
+gh api "repos/$REPO/branches/main/protection" --method PUT --input - <<'JSON'
+{
+  "required_status_checks": {
+    "strict": true,
+    "checks": [{"context": "quality-gate"}]
+  },
+  "enforce_admins": true,
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1
+  },
+  "restrictions": null
+}
+JSON
 
 echo "Branch protection enabled for $REPO main"
