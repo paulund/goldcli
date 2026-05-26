@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
+import { homedir } from 'os';
+import { resolve } from 'path';
 import { LatestResponse, TimeseriesDay, TimeseriesResponse } from './types.js';
 
 dotenv.config();
+dotenv.config({ path: resolve(homedir(), '.config', 'goldcli', '.env'), override: false });
 
 const BASE_URL = 'https://api.metals.dev/v1';
 
@@ -15,8 +18,14 @@ function getApiKey(): string {
   const key = process.env.METALS_DEV_API_KEY;
   if (!key) {
     console.error('METALS_DEV_API_KEY is not set.');
-    console.error('Create a .env file in the project root with:');
-    console.error('  METALS_DEV_API_KEY=your_key_here');
+    console.error('');
+    console.error('  Option 1 — Set it in your shell profile (~/.zshrc, ~/.bashrc):');
+    console.error('    export METALS_DEV_API_KEY=your_key_here');
+    console.error('');
+    console.error('  Option 2 — Create ~/.config/goldcli/.env:');
+    console.error('    mkdir -p ~/.config/goldcli && echo "METALS_DEV_API_KEY=your_key_here" > ~/.config/goldcli/.env');
+    console.error('');
+    console.error('  Option 3 — Create a .env file in the current directory.');
     process.exit(1);
   }
   return key;
