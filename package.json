@@ -17,7 +17,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "build": "tsc",
-    "prepare": "npm run build",
+    "prepare": "husky",
     "gold": "tsx src/index.ts --asset gold",
     "silver": "tsx src/index.ts --asset silver",
     "typecheck": "tsc --noEmit",
@@ -34,10 +34,18 @@
     "commander": "^13.1.0",
     "dotenv": "^16.4.7"
   },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@types/node": "^22.14.0",
     "eslint": "^9.26.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5",
     "prettier": "^3.5.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
