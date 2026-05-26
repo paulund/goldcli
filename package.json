@@ -1,5 +1,5 @@
 {
-  "name": "goldcli",
+  "name": "@paulund/goldcli",
   "version": "1.0.0",
   "description": "CLI tool to track precious metal spot prices with historical comparisons",
   "type": "module",

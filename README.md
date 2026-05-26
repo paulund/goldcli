@@ -23,7 +23,7 @@ A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) wi
 ## Installation
 
 ```bash
-npm install -g goldcli
+npm install -g @paulund/goldcli
 ```
 
 ### Local development
