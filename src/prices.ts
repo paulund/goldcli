@@ -9,7 +9,7 @@ function fmtDate(d: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-interface PriceMatch {
+export interface PriceMatch {
   price: number;
   date: string;
 }
@@ -20,7 +20,7 @@ interface PriceMatch {
  * Returns both the price and matched date so callers can look up
  * the exchange rate for currency conversion.
  */
-function findPrice(
+export function findPrice(
   rates: Record<string, TimeseriesDay>,
   metalKey: string,
   targetDate: Date,
@@ -45,7 +45,7 @@ function findPrice(
  * The timeseries endpoint always returns metals in USD.
  * Convert to the target currency using that day's exchange rate.
  */
-function convertFromUsd(usdPrice: number, date: string, rates: Record<string, TimeseriesDay>, currency: string): number {
+export function convertFromUsd(usdPrice: number, date: string, rates: Record<string, TimeseriesDay>, currency: string): number {
   const day = rates[date];
   const rate = day?.currencies?.[currency];
   if (!rate) return usdPrice;
