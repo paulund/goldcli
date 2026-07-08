@@ -4,6 +4,8 @@
 
 A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) with historical comparisons across multiple timeframes and currencies. Powered by [bullionapi.dev](https://bullionapi.dev).
 
+> **Status: pre-release.** This package is currently **private on npm** pending the public launch of [bullionapi.dev](https://bullionapi.dev). The CLI is feature-complete and tested, but cannot be installed via `npm install -g` until the API goes live. Track progress at [github.com/PaulundOrg/bullion-api](https://github.com/PaulundOrg/bullion-api).
+
 ## Features
 
 - Real-time spot prices for Gold (XAU) and Silver (XAG)
@@ -20,8 +22,14 @@ A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) wi
 
 ## Installation
 
+> **Not yet available via npm.** The package will be published publicly once [bullionapi.dev](https://bullionapi.dev) is live. In the meantime, build from source:
+
 ```bash
-npm install -g @paulund/bullion-cli
+git clone https://github.com/paulund/bullion-cli.git
+cd bullion-cli
+npm install
+npm run build
+npm link
 ```
 
 ### Local development
