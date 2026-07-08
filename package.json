@@ -1,10 +1,10 @@
 {
-  "name": "@paulund/goldcli",
-  "version": "1.0.1",
+  "name": "@paulund/bullion-cli",
+  "version": "1.0.0",
   "description": "CLI tool to track precious metal spot prices with historical comparisons",
   "type": "module",
   "bin": {
-    "goldcli": "./dist/index.js"
+    "bullion": "./dist/index.js"
   },
   "files": [
     "dist/",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "tsx src/index.ts",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "prepare": "husky",
     "gold": "tsx src/index.ts --asset gold",
     "silver": "tsx src/index.ts --asset silver",

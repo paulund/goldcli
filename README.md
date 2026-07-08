@@ -1,9 +1,8 @@
-# goldcli
+# bullion-cli
 
-[![CI](https://github.com/paulund/goldcli/actions/workflows/ci.yml/badge.svg)](https://github.com/paulund/goldcli/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) with historical comparisons across multiple timeframes and currencies.
+A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) with historical comparisons across multiple timeframes and currencies. Powered by [bullionapi.dev](https://bullionapi.dev).
 
 ## Features
 
@@ -13,66 +12,62 @@ A lightweight CLI tool for tracking precious metal spot prices (Gold, Silver) wi
 - Color-coded output (green for gains, red for losses)
 - Clean table formatting with `cli-table3`
 - Modular asset architecture — easy to add new assets
-- 2 API calls per run — respects free-tier limits
 
 ## Prerequisites
 
 - **Node.js 18+** (uses native `fetch`)
-- A **free API key** from [metals.dev](https://www.metals.dev) (100 requests/month on the free tier)
+- A free API key from [bullionapi.dev](https://bullionapi.dev)
 
 ## Installation
 
 ```bash
-npm install -g @paulund/goldcli
+npm install -g @paulund/bullion-cli
 ```
 
 ### Local development
 
 ```bash
-git clone https://github.com/paulund/goldcli.git
-cd goldcli
+git clone https://github.com/paulund/bullion-cli.git
+cd bullion-cli
 npm install
 npm run build
 npm link
-goldcli --help
+bullion --help
 ```
 
-### API Key
+## API Key
 
-Copy `.env.example` to `.env` and add your metals.dev API key:
+Get a free API key at [https://bullionapi.dev](https://bullionapi.dev), then configure it:
 
 ```bash
-cp .env.example .env
-```
+# Option 1 — Set it in your shell profile
+export BULLION_API_KEY=your_key_here
 
-Then edit `.env`:
-
+# Option 2 — Create ~/.config/bullion/.env
+mkdir -p ~/.config/bullion
+echo "BULLION_API_KEY=your_key_here" > ~/.config/bullion/.env
 ```
-METALS_DEV_API_KEY=your_key_here
-```
-
-> ⚠️ Your `.env` file is gitignored and will never be committed.
 
 ## Usage
 
 ```bash
 # Show both Gold and Silver in USD (default)
-goldcli
+bullion
 
 # Filter by asset
-goldcli --asset gold
-goldcli --asset XAG
+bullion --asset gold
+bullion --asset XAG
 
 # Choose currency
-goldcli --currency GBP
-goldcli -c EUR --asset silver
+bullion --currency GBP
+bullion -c EUR --asset silver
 
 # Short flags
-goldcli -a gold -c GBP
-goldcli -m gold          # --metal is alias for --asset
+bullion -a gold -c GBP
+bullion -m gold          # --metal is alias for --asset
 
 # Help
-goldcli --help
+bullion --help
 ```
 
 ### Example output
@@ -92,17 +87,16 @@ Gold (XAU)
 
 ## Adding new assets
 
-The modular architecture makes it straightforward to add new asset types. See the [skills guide](.agents/skills/goldcli/SKILL.md) for agent integration.
+The modular architecture makes it straightforward to add new asset types:
 
-1. Create a new data-source module (e.g. `src/yahoo-api.ts` for S&P 500)
-2. Register the asset in [`src/config.ts`](src/config.ts)
-3. Wire it through [`src/prices.ts`](src/prices.ts)
+1. Add the asset to [`src/config.ts`](src/config.ts)
+2. Wire it through [`src/prices.ts`](src/prices.ts) (if extra logic is needed)
 
 ## Configuration
 
 | Variable | Description |
 |----------|-------------|
-| `METALS_DEV_API_KEY` | Your metals.dev API key (required) |
+| `BULLION_API_KEY` | Your bullionapi.dev API key (required) |
 
 ## Development
 
@@ -112,26 +106,32 @@ npm start           # run with tsx (no build needed)
 npm run build       # compile to dist/
 npm test            # run tests
 npm run lint        # ESLint check
-npm run format      # format with Prettier
-npm run typecheck   # TypeScript type check
 ```
 
 ## Project structure
 
 ```
-goldcli/
+bullion-cli/
 ├── src/
-│   ├── index.ts        # CLI entry point (commander)
-│   ├── types.ts        # TypeScript interfaces
-│   ├── config.ts       # Asset definitions
-│   ├── metals-api.ts   # metals.dev API client
-│   ├── prices.ts       # Price calculation & conversion
-│   └── format.ts       # Terminal output formatting
-├── .github/            # CI, Dependabot, issue templates
-├── .agents/            # Agent skills
-└── dist/               # Compiled JS (built by tsc)
+│   ├── index.ts              # CLI entry point
+│   ├── bullion-client.ts     # HTTP client for bullionapi.dev
+│   ├── prices.ts             # Price calculation & conversion
+│   ├── config.ts             # Asset definitions
+│   ├── types.ts              # TypeScript interfaces
+│   └── format.ts             # Terminal output formatting
+└── dist/                     # Compiled JS (built by tsc)
 ```
+
+## How it works
+
+Unlike most price CLIs that hit their data source directly (and burn through API quotas), `bullion-cli` talks to [bullionapi.dev](https://bullionapi.dev), a cached API layer. This means:
+
+- Fast, consistent response times (single round-trip, no client-side chunking)
+- No local cache to manage or stale data to worry about
+- Your API key's rate limits are centralized
+
+The API contract is pass-through with [metals.dev](https://metals.dev), so response shapes match exactly.
 
 ## License
 
-MIT &copy; [Paul Underwood](https://github.com/paulund)
+MIT © Paul Underwood (https://github.com/paulund)

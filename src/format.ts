@@ -8,25 +8,46 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
   GBP: '\u00A3',
 };
 
-function formatPrice(value: number | null, currency: string): string {
-  if (value === null) return chalk.dim('N/A');
+/**
+ * Pure formatters — testable without chalk.
+ */
+export function formatPrice(value: number | null, currency: string): string {
+  if (value === null) return 'N/A';
   const sym = CURRENCY_SYMBOLS[currency];
   return sym ? `${sym}${value.toFixed(2)}` : `${value.toFixed(2)} ${currency}`;
 }
 
-function coloredDiff(diff: number | null, currency: string): string {
-  if (diff === null) return chalk.dim('N/A');
+export function formatDiff(diff: number | null, currency: string): string {
+  if (diff === null) return 'N/A';
+  const sign = diff >= 0 ? '+' : '-';
+  const abs = Math.abs(diff).toFixed(2);
   const sym = CURRENCY_SYMBOLS[currency];
-  const formatted = sym
-    ? `${diff >= 0 ? '+' : ''}${sym}${diff.toFixed(2)}`
-    : `${diff >= 0 ? '+' : ''}${diff.toFixed(2)} ${currency}`;
+  return sym ? `${sign}${sym}${abs}` : `${sign}${abs} ${currency}`;
+}
+
+export function formatPct(pct: number | null): string {
+  if (pct === null) return 'N/A';
+  const sign = pct >= 0 ? '+' : '';
+  return `${sign}${pct.toFixed(2)}%`;
+}
+
+/**
+ * Colored wrappers — presentation layer.
+ */
+export function coloredPrice(value: number | null, currency: string): string {
+  const formatted = formatPrice(value, currency);
+  return value === null ? chalk.dim(formatted) : chalk.bold(formatted);
+}
+
+export function coloredDiff(diff: number | null, currency: string): string {
+  const formatted = formatDiff(diff, currency);
+  if (diff === null) return chalk.dim(formatted);
   return diff >= 0 ? chalk.green(formatted) : chalk.red(formatted);
 }
 
-function coloredPct(pct: number | null): string {
-  if (pct === null) return chalk.dim('N/A');
-  const sign = pct >= 0 ? '+' : '';
-  const formatted = `${sign}${pct.toFixed(2)}%`;
+export function coloredPct(pct: number | null): string {
+  const formatted = formatPct(pct);
+  if (pct === null) return chalk.dim(formatted);
   return pct >= 0 ? chalk.green(formatted) : chalk.red(formatted);
 }
 
@@ -38,11 +59,18 @@ export function displayReports(reports: PriceReport[]): void {
     });
 
     for (const c of report.changes) {
-      table.push([c.label, formatPrice(c.historicalPrice, report.currency), coloredDiff(c.diff, report.currency), coloredPct(c.percentChange)]);
+      table.push([
+        c.label,
+        formatPrice(c.historicalPrice, report.currency),
+        coloredDiff(c.diff, report.currency),
+        coloredPct(c.percentChange),
+      ]);
     }
 
     console.log(`\n${chalk.bold(report.name)} (${chalk.cyan(report.symbol)})`);
-    console.log(`  ${chalk.underline('Current')} (${report.currency}): ${chalk.bold(formatPrice(report.currentPrice, report.currency))}`);
+    console.log(
+      `  ${chalk.underline('Current')} (${report.currency}): ${coloredPrice(report.currentPrice, report.currency)}`,
+    );
     console.log(table.toString());
   }
 }
