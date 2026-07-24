@@ -1,9 +1,6 @@
 import { AssetConfig } from './types.js';
 
-export const SUPPORTED_ASSETS: AssetConfig[] = [
-  { id: 'gold', label: 'Gold', symbol: 'XAU', apiKey: 'gold' },
-  { id: 'silver', label: 'Silver', symbol: 'XAG', apiKey: 'silver' },
-];
+export const SUPPORTED_ASSETS: AssetConfig[] = [{ id: 'gold', label: 'Gold', symbol: 'XAU', apiKey: 'gold' }];
 
 export const LOOKBACK_PERIODS = [
   { label: '1 Day', days: 1 },

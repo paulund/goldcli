@@ -40,7 +40,7 @@ describe('findPrice', () => {
 
   it('returns undefined when metal key is not in the data', () => {
     const target = new Date('2026-05-25');
-    const result = findPrice(mockRates, 'silver', target);
+    const result = findPrice(mockRates, 'unknown', target);
     expect(result).toBeUndefined();
   });
 });

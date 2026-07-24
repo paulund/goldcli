@@ -6,7 +6,7 @@ const sampleLatest: LatestResponse = {
   status: 'success',
   currency: 'USD',
   unit: 'toz',
-  metals: { gold: 4527.86, silver: 31.45 },
+  metals: { gold: 4527.86 },
   currencies: { USD: 1, EUR: 0.92 },
   timestamps: { metal: '2026-07-08T11:55:00Z', currency: '2026-07-08T11:55:00Z' },
 };
