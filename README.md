@@ -102,8 +102,8 @@ The modular architecture makes it straightforward to add new asset types:
 
 ## Configuration
 
-| Variable | Description |
-|----------|-------------|
+| Variable          | Description                            |
+| ----------------- | -------------------------------------- |
 | `BULLION_API_KEY` | Your bullionapi.dev API key (required) |
 
 ## Development
@@ -115,6 +115,16 @@ npm run build       # compile to dist/
 npm test            # run tests
 npm run lint        # ESLint check
 ```
+
+## Releases
+
+Releases are created automatically after a reviewed PR merges into `main`. PR titles use [Conventional
+Commits](https://www.conventionalcommits.org/): `feat:` creates a minor release, `fix:` and `perf:` create
+patch releases, and `!` creates a major release. `docs:`, `ci:`, and `chore:` changes do not publish a package.
+
+After the initial manual npm publication, configure npm trusted publishing for `.github/workflows/release.yml` and set the
+`NPM_TRUSTED_PUBLISHING_ENABLED` repository variable to `true`. Until then, pushes do not publish; manual dispatches are
+dry runs only.
 
 ## Project structure
 

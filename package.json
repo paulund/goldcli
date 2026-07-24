@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "CLI tool to track precious metal spot prices with historical comparisons",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulund/bullion-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/paulund/bullion-cli/issues"
+  },
+  "homepage": "https://github.com/paulund/bullion-cli#readme",
   "bin": {
     "bullion": "./dist/index.js"
   },
@@ -26,7 +34,8 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write 'src/**/*.ts'",
-    "format:check": "prettier --check 'src/**/*.ts'"
+    "format:check": "prettier --check 'src/**/*.ts'",
+    "release": "semantic-release"
   },
   "dependencies": {
     "chalk": "^5.4.1",
@@ -47,6 +56,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
     "prettier": "^3.5.3",
+    "semantic-release": "^25.0.8",
     "tsx": "^4.19.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.32.0",
